@@ -45,7 +45,7 @@ class Response
        
     }
 
-    public function __construct($success, $httpStatusCode, $message, $toCache, $data)
+    public function __construct(bool $success, int $httpStatusCode, string $message, bool $toCache, string $data)
     {
         $this->_success = $success;
         $this->_httpStatusCode = $httpStatusCode;

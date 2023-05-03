@@ -22,7 +22,7 @@ class Furniture extends Product
         return $this->_length;
     }
 
-    public function __construct($name, $price, $sku, $width, $height, $length)
+    public function __construct(string $name, float $price, string $sku, float $width, float $height, float $length)
     {
         parent::__construct($name, $price, $sku);
         $this->_width = $width;
