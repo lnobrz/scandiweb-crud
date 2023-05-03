@@ -5,7 +5,8 @@ abstract class Product
     private $_price;
     private $_sku;
 
-    public function getName(): string{
+    public function getName(): string
+    {
         return $this->_name;
     }
 
@@ -14,7 +15,7 @@ abstract class Product
         return $this->_price;
     }
 
-        public function getSku(): string
+    public function getSku(): string
     {
         return $this->_sku;
     }
