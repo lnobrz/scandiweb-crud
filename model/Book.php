@@ -9,9 +9,9 @@ class Book extends Product
         return $this->_weight;
     }
 
-    function __construct($name, $price, $weight)
+    function __construct($name, $price, $sku, $weight)
     {
-        parent::__construct($name, $price);
+        parent::__construct($name, $price, $sku);
         $this->_weight = $weight;
     }
 }

@@ -4,14 +4,14 @@ class Dvd extends Product
 {
     private $_size;
 
-    public function getSize(): float
+    public function getSize():
     {
         return $this->_size;
     }
 
-    public function __construct($name, $price, $size)
+    public function __construct($name, $price, $sku, $size)
     {
-        parent::__construct($name, $price);
+        parent::__construct($name, $price, $sku);
         $this->_size = $size;
     }
 }
