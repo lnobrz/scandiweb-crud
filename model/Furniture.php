@@ -29,5 +29,4 @@ class Furniture extends Product
         $this->_height = $height;
         $this->_length = $length;
     }
-    
 }

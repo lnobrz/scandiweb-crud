@@ -1,7 +1,7 @@
 <?php
 include_once "../model/Response.php";
 
-class Database 
+class Database
 {
     private static $writeDatabaseConnection;
     private static $readDatabaseConnection;

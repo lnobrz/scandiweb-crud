@@ -37,16 +37,16 @@ class Response
             $this->_responseData['data'] = $this->_data;
         }
 
-        if (!$this->_data === ""){
+        if (!$this->_data === "") {
             echo json_decode($this->_data);
         } else {
             echo $this->_responseData['messages'][0];
         }
-       
     }
 
     public function __construct(bool $success, int $httpStatusCode, string $message, bool $toCache, string $data)
     {
+
         $this->_success = $success;
         $this->_httpStatusCode = $httpStatusCode;
         $this->_messages[] = $message;
