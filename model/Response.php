@@ -8,12 +8,12 @@ class Response
     private $_toCache = false;
     private $_responseData = array();
 
-    public function addMessage($message)
+    public function addMessage($message): void
     {
         $this->_messages[] = $message;
     }
 
-    public function send()
+    public function send(): void
     {
         header("Content-type: application/json;charset=utf-8");
 
