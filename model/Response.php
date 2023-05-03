@@ -13,11 +13,6 @@ class Response
         $this->_messages[] = $message;
     }
 
-    public function setData($data)
-    {
-        $this->_data = $data;
-    }
-
     public function send()
     {
         header("Content-type: application/json;charset=utf-8");
@@ -42,7 +37,7 @@ class Response
             $this->_responseData['data'] = $this->_data;
         }
 
-        if ($this->_data){
+        if (!$this->_data === ""){
             echo json_decode($this->_data);
         } else {
             echo $this->_responseData['messages'][0];
@@ -50,11 +45,12 @@ class Response
        
     }
 
-    public function __construct($success, $httpStatusCode, $message, $toCache)
+    public function __construct($success, $httpStatusCode, $message, $toCache, $data)
     {
         $this->_success = $success;
         $this->_httpStatusCode = $httpStatusCode;
         $this->_messages[] = $message;
         $this->_toCache = $toCache;
+        $this->_data = $data;
     }
 }
