@@ -3,12 +3,13 @@ abstract class Product
 {
     private $_name;
     private $_price;
+    private $_sku;
 
-    public function getName(){
+    public function getName(): string{
         return $this->_name;
     }
 
-    public function getPrice()
+    public function getPrice(): float
     {
         return $this->_price;
     }

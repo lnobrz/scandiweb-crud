@@ -4,7 +4,7 @@ class Dvd extends Product
 {
     private $_size;
 
-    public function getSize()
+    public function getSize(): float
     {
         return $this->_size;
     }

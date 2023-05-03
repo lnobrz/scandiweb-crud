@@ -4,7 +4,7 @@ class Book extends Product
 {
     private $_weight;
 
-    public function getWeight()
+    public function getWeight(): float
     {
         return $this->_weight;
     }

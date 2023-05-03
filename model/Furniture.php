@@ -7,17 +7,17 @@ class Furniture extends Product
     private $_height;
     private $_length;
 
-    public function getWidth()
+    public function getWidth(): float
     {
         return $this->_width;
     }
 
-    public function getHeight()
+    public function getHeight(): float
     {
         return $this->_height;
     }
 
-    public function getLength()
+    public function getLength(): float
     {
         return $this->_length;
     }
