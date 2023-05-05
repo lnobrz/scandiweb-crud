@@ -4,22 +4,22 @@ include_once "../Helpers/inputsValidations.php";
 
 class Furniture extends Product
 {
-    private $_width;
+    private $_weight;
     private $_height;
     private $_length;
 
-    public function getWidth(): float
+    public function getWeight(): float
     {
-        return $this->_width;
+        return $this->_weight;
     }
 
-    public function setWidth($width): void
+    public function setWidth($weight): void
     {
-        if (!InputsValidations::validFloatInput($width)) {
+        if (!InputsValidations::validFloatInput($weight)) {
             throw new ProductException("Unsupported width value");
         }
 
-        $this->_width = $width;
+        $this->_weight = $weight;
     }
 
     public function getHeight(): float
@@ -61,15 +61,15 @@ class Furniture extends Product
         $fullData['price'] = $this->getPrice();
         $fullData['category'] = $this->getCategory();
         $fullData['sku'] = $this->getSku();
-        $fullData['width'] = $this->getWidth();
+        $fullData['width'] = $this->getWeight();
         $fullData['height'] = $this->getHeight();
         $fullData['length'] = $this->getLength();
         return $fullData;
     }
-    public function __construct(string $name, float $price, string $category, string $sku, float $width, float $height, float $length)
+    public function __construct(string $name, float $price, string $category, string $sku, float $weight, float $height, float $length)
     {
         parent::__construct($name, $price, $category, $sku);
-        $this->setWidth($width);
+        $this->setWidth($weight);
         $this->setHeight($height);
         $this->setLength($length);
     }
