@@ -18,74 +18,70 @@ try {
     exit;
 }
 
-// if (empty($_GET)) {
+if (empty($_GET)) {
 
 
-//     if ($_SERVER['REQUEST_METHOD'] === 'GET') {
-//         try {
-//             $productQuery = $readDatabase->prepare('SELECT * from products');
-//             $productQuery->execute();
+    if ($_SERVER['REQUEST_METHOD'] === 'GET') {
+        try {
+            $productQuery = $readDatabase->prepare('SELECT * from products');
+            $productQuery->execute();
+            $productRowCount = $productQuery->rowCount();
 
-//             $productRowCount = $productQuery->rowCount();
+            if ($productRowCount === 0) {
+                $response = new Response(false, 404, "Products not found", false, []);
+                $response->send();
+                exit;
+            }
 
+            $products = array();
 
-//             if ($productRowCount === 0) {
-//                 $response = new Response(false, 404, "Products not found", false, []);
-//                 $response->send();
-//                 exit;
-//             }
+            foreach ($productQuery->fetchAll(PDO::FETCH_ASSOC) as $row) {
+                $category = $row['category'];
+             
 
-//             $products = array();
+                if ($category === "books") {
+                    $weight = DatabaseProcessing::additionalInfos('books', $row['id'])->fetch(PDO::FETCH_ASSOC)['weight'];
+                    $book = new Book($row['name'], $row['price'], $row['category'], $row['sku'], $weight);
+                    $book->setId($row['id']);
+                    $bookFullData = $book->getFullData();
+                    array_push($products, $bookFullData);
+                  } else if ($category === "dvds") {
+                    $size = DatabaseProcessing::additionalInfos('dvds', $row['id'])->fetch(PDO::FETCH_ASSOC)['size'];
+                    $dvd = new Dvd($row['name'], $row['price'], $row['category'], $row['sku'], $size);
+                    $dvd->setId($row['id']);
+                    $dvdFullData = $dvd->getFullData();
+                    array_push($products,  $dvdFullData);
+                } else if ($category === "furnitures") {
+                    $furnitureDetails = DatabaseProcessing::additionalInfos('furnitures', $row['id'])->fetch(PDO::FETCH_ASSOC);
+                    $furniture = new Furniture($row['name'], $row['price'], $row['category'], $row['sku'],  $furnitureDetails['weight'], $furnitureDetails['height'], $furnitureDetails['length']);
+                    $furniture->setId($row['id']);
+                    $furnitureFullData = $dvd->getFullData();
+                    array_push($products,  $furnitureFullData);
+                }
+            }
 
-//             // while ($row = $productQuery->fetch(PDO::FETCH_ASSOC)) {
-//             //     $productCategory = $row['category'];
+            DatabaseProcessing::sendResponse($productRowCount, $products);
+        } catch (ProductException $exception) {
+            $response = new Response(false, 500, $exception->getMessage(), false, []);
+        } catch (PDOException $exception) {
+            $response = new Response(false, 500, "Failed to get product", false, []);
+        }
+    } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
+        try {
+            $deleteQuery = $writeDatabase->prepare('DELETE FROM products WHERE id = :productId');
+            $deleteQuery->bindParam(':productId', $productId, PDO::PARAM_INT);
+            $deleteQuery->execute();
+            $rowCount = $deleteQuery->rowCount();
 
-//             //     if ($productCategory === "books") {
-//             //         $weight = DatabaseProcessing::additionalInfos('books', $row['id'])->fetch(PDO::FETCH_ASSOC);
-//             //         $book = new Book($row['name'], $row['price'], $row['category'], $row['sku'], $weight['weight']);
-//             //         $book->setId($row['id']);
-//             //         $bookFullData = $book->getFullData();
-//             //         $products[] = $bookFullData;
-//             //     } // else if ($productCategory === "dvds") {
-//                 //     $dvdQuery = DatabaseProcessing::additionalInfos('dvds', $row['id']);
-//                 //     $size = $dvdQuery->fetch(PDO::FETCH_ASSOC)['size'];
-//                 //     $dvd = new Dvd($row['name'], $row['price'], $row['category'], $row['sku'], $size);
-//                 //     $dvd->setId($row['id']);
-//                 //     $dvdFullData = $dvd->getFullData();
-//                 //     $products[] = $dvdFullData;
-//                 // } else if ($productCategory === "furnitures") {
-//                 //     $furnitureQuery = DatabaseProcessing::additionalInfos('furnitures', $row['id']);
-//                 //     $furnitureData = $furnitureQuery->fetch(PDO::FETCH_ASSOC);
-//                 //     print_r($furnitureData);
-//                 //     $furniture = new Furniture($row['name'], $row['price'], $row['category'], $row['sku'],  $furnitureData['weight'], $furnitureData['height'], $furnitureData['length']);
-//                 //     $furniture->setId($row['id']);
-//                 //     $furnitureFullData = $dvd->getFullData();
-//                 //     $products[] = $furnitureFullData;
-//                 // }
-//             }
-
-//             DatabaseProcessing::sendResponse($productRowCount, $products);
-//         } catch (ProductException $exception) {
-//             $response = new Response(false, 500, $exception->getMessage(), false, []);
-//         } catch (PDOException $exception) {
-//             $response = new Response(false, 500, "Failed to get product", false, []);
-//         }
-//     } elseif ($_SERVER['REQUEST_METHOD'] === 'DELETE') {
-//         try {
-//             $deleteQuery = $writeDatabase->prepare('DELETE FROM products WHERE id = :productId');
-//             $deleteQuery->bindParam(':productId', $productId, PDO::PARAM_INT);
-//             $deleteQuery->execute();
-//             $rowCount = $deleteQuery->rowCount();
-
-//             if ($rowCount === 0) {
-//                 $response = new Response(false, 404, "Product not found", false, []);
-//                 $response->send();
-//                 exit;
-//             }
-//         } catch (PDOException $exception) {
-//             $response = new Response(false, 500, "failed to delete task", false, []);
-//             $response->send();
-//             exit;
-//         }
-//     }
-// }
+            if ($rowCount === 0) {
+                $response = new Response(false, 404, "Product not found", false, []);
+                $response->send();
+                exit;
+            }
+        } catch (PDOException $exception) {
+            $response = new Response(false, 500, "failed to delete task", false, []);
+            $response->send();
+            exit;
+        }
+    }
+}
