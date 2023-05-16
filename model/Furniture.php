@@ -33,7 +33,7 @@ class Furniture extends Product
             throw new ProductException("Unsupported height value");
         }
 
-        $this->setHeight($height);
+        $this->_height = $height;
     }
 
 
@@ -49,7 +49,7 @@ class Furniture extends Product
             throw new ProductException("Unsupported length value");
         }
 
-        $this->setLength($length);
+        $this->_length = $length;
     }
 
     
